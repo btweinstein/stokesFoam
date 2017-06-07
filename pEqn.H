@@ -46,5 +46,4 @@
     // Momentum corrector
     U = HbyA - rAtU()*fvc::grad(p);
     U.correctBoundaryConditions();
-    fvOptions.correct(U);
 }

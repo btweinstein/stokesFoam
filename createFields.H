@@ -42,4 +42,4 @@ autoPtr<incompressible::turbulenceModel> turbulence
     incompressible::turbulenceModel::New(U, phi, laminarTransport)
 );
 
-#include "createMRF.H"
+
