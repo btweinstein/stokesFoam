@@ -1,7 +1,5 @@
     // Momentum predictor
 
-    U.correctBoundaryConditions();
-
     tmp<fvVectorMatrix> tUEqn
     (
 	fvm::laplacian(nu, U)
