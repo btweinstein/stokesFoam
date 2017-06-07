@@ -18,7 +18,7 @@
     tUEqn.clear();
 
     // Update the pressure BCs to ensure flux consistency
-    //constrainPressure(p, U, phiHbyA, rAtU(), MRF);
+    constrainPressure(p, U, phiHbyA, rAtU());
 
     // Non-orthogonal pressure corrector loop
     while (simple.correctNonOrthogonal())
