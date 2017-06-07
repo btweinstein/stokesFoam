@@ -35,11 +35,24 @@ setRefCell(p, simple.dict(), pRefCell, pRefValue);
 mesh.setFluxRequired(p.name());
 
 
-singlePhaseTransportModel laminarTransport(U, phi);
-
-autoPtr<incompressible::turbulenceModel> turbulence
+Info<< "Reading Transport Properties... \n" << endl;
+IOdictionary transportProperties
 (
-    incompressible::turbulenceModel::New(U, phi, laminarTransport)
+     IOobject
+     (
+        "transportProperties",
+        runTime.constant(),
+        mesh,
+        IOobject::MUST_READ_IF_MODIFIED,
+        IOobject::NO_WRITE
+     )
 );
+
+
+Info<< "Reading viscosity mu \n" << endl;
+dimensionedScalar mu
+(
+     transportProperties.lookup("mu")
+ );
 
 

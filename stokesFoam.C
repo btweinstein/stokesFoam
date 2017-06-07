@@ -48,8 +48,6 @@ int main(int argc, char *argv[])
     #include "createFields.H"
     #include "initContinuityErrs.H"
 
-    turbulence->validate();
-
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
     Info<< "\nStarting time loop\n" << endl;
@@ -63,9 +61,6 @@ int main(int argc, char *argv[])
             #include "UEqn.H"
             #include "pEqn.H"
         }
-
-        laminarTransport.correct();
-        turbulence->correct();
 
         runTime.write();
 

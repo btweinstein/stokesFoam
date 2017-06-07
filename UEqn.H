@@ -2,7 +2,7 @@
 
     tmp<fvVectorMatrix> tUEqn
     (
-        fvm::laplacian(nu, U)
+        fvm::laplacian(mu, U)
     );
 
     fvVectorMatrix& UEqn = tUEqn.ref();
@@ -11,5 +11,5 @@
 
     if (simple.momentumPredictor())
     {
-        solve(UEqn == -fvc::grad(p));
+        solve(UEqn == fvc::grad(p));
     }
