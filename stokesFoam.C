@@ -50,17 +50,50 @@ int main(int argc, char *argv[])
 
     Info<< "\nStarting time loop\n" << endl;
 
-    while (simple.loop())
+    double eqnResidual = 1.0;
+    
+    while (eqnResidual > 0.001)
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
-        // --- Pressure-velocity SIMPLE corrector
-        {
-            #include "UEqn.H"
-            #include "pEqn.H"
-        }
+        p.storePrevIter();
 
+        tmp<fvVectorMatrix> UEqn
+        (
+           fvm::laplacian(nu, U)
+        );
+
+        UEqn.relax();
+
+        solve(Ueqn==fvc::grad(p));
+
+        p.boundaryField().updateCoeffs();
+
+        volScalarField AU = UEqn().A();
+        U = UEqn().H()/AU;
+        UEqn.clear();
+
+        phi = fvc::interpolate(U) & mesh.Sf();
+        adjustPhi(phi, U, p);
+
+        fvScalarMatrix pEqn
+          (
+           fvm::laplacian(1.0/AU, p) == fvc::div(phi)
+           );
+        pEqn.setReference(pRefCell, pRefValue);
+        pEqn.solve();
+
+        phi -= pEqn.flux();
+
+        # include "continuityErrs.H"
+
+        p.relax();
+        U -= fvc::grad(p)/AU;
+        U.correctBoundaryConditions();
+        
         runTime.write();
+
+        eqnResidual = pEqn.solve().initialResidual();
 
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
