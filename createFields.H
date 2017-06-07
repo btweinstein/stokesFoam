@@ -49,9 +49,16 @@ IOdictionary transportProperties
 );
 
 
-Info<< "Reading viscosity mu \n" << endl;
+Info<< "Reading dynamic viscosity mu \n" << endl;
 dimensionedScalar mu
 (
      transportProperties.lookup("mu")
  );
+
+Info<< "Reading kinematic viscosity nu \n" << endl;
+dimensionedScalar nu
+(
+     transportProperties.lookup("nu")
+ );
+
 
