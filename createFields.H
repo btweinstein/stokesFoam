@@ -55,4 +55,10 @@ dimensionedScalar mu
      transportProperties.lookup("mu")
  );
 
+Info<< "Reading viscosity rho \n" << endl;
+dimensionedScalar rho
+(
+     transportProperties.lookup("rho")
+ );
+
 
