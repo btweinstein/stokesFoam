@@ -2,8 +2,7 @@
 
     tmp<fvVectorMatrix> tUEqn
     (
-	fvm::ddt(rho, U)
-        fvm::laplacian(mu, U)
+	fvm::laplacian(mu, U)
     );
 
     fvVectorMatrix& UEqn = tUEqn.ref();
