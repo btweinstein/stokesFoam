@@ -58,28 +58,30 @@ int main(int argc, char *argv[])
 
         p.storePrevIter();
 
-        tmp<fvVectorMatrix> UEqn
+        tmp<fvVectorMatrix> tUEqn
         (
            fvm::laplacian(nu, U)
         );
 
+        fvVectorMatrix& UEqn = tUEqn.ref();
+        
         UEqn.relax();
 
-        solve(Ueqn==fvc::grad(p));
+        solve(UEqn==fvc::grad(p));
 
-        p.boundaryField().updateCoeffs();
+        p.correctBoundaryConditions();
 
-        volScalarField AU = UEqn().A();
-        U = UEqn().H()/AU;
-        UEqn.clear();
+        volScalarField AU = UEqn.A();
+        U = UEqn.H()/AU;
+        // UEqn.clear();
 
         phi = fvc::interpolate(U) & mesh.Sf();
         adjustPhi(phi, U, p);
 
         fvScalarMatrix pEqn
-          (
+        (
            fvm::laplacian(1.0/AU, p) == fvc::div(phi)
-           );
+        );
         pEqn.setReference(pRefCell, pRefValue);
         pEqn.solve();
 
