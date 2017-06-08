@@ -60,23 +60,24 @@ int main(int argc, char *argv[])
 
         tmp<fvVectorMatrix> tUEqn
         (
-           fvm::laplacian(nu, U)
+           -fvm::laplacian(nu, U)
         );
 
         fvVectorMatrix& UEqn = tUEqn.ref();
         
         UEqn.relax();
 
-        solve(UEqn==fvc::grad(p));
+        solve(UEqn== - fvc::grad(p));
 
         p.correctBoundaryConditions();
 
         volScalarField AU = UEqn.A();
         U = UEqn.H()/AU;
+        U.correctBoundaryConditions();
         // UEqn.clear();
 
         phi = fvc::interpolate(U) & mesh.Sf();
-        adjustPhi(phi, U, p);
+        //adjustPhi(phi, U, p);
 
         fvScalarMatrix pEqn
         (
