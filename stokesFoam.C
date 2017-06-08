@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
         
         UEqn.relax();
 
-        solve(UEqn== - fvc::grad(p));
+        solve(UEqn == -fvc::grad(p));
 
         p.correctBoundaryConditions();
 
