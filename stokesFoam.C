@@ -75,7 +75,6 @@ int main(int argc, char *argv[])
         // UEqn.clear();
 
         phi = fvc::interpolate(U) & mesh.Sf();
-        //adjustPhi(phi, U, p);
 
         fvScalarMatrix pEqn
         (
