@@ -49,10 +49,8 @@ int main(int argc, char *argv[])
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
     Info<< "\nStarting time loop\n" << endl;
-
-    double eqnResidual = 1.0;
     
-    while (eqnResidual > 0.001)
+    while (simple.loop())
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
@@ -95,8 +93,6 @@ int main(int argc, char *argv[])
         U.correctBoundaryConditions();
         
         runTime.write();
-
-        eqnResidual = pEqn.solve().initialResidual();
 
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
